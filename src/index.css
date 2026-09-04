@@ -1,9 +1,13 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
 @layer base {
   body {
     @apply antialiased bg-[#fbfbfa] text-zinc-900;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 }
 
@@ -21,4 +25,15 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #a1a1aa;
+}
+
+/* Hero Section Hand Image Optimization */
+.hero-hand-image {
+  filter: none !important;
+  transform: translateY(135px);
+  margin-bottom: -135px;
+  mask-image: linear-gradient(to bottom, black 40%, transparent 95%);
+  -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 95%);
+  position: relative;
+  z-index: 1;
 }

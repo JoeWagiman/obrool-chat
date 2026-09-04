@@ -65,14 +65,14 @@ export const LeadModal: React.FC<LeadModalProps> = ({
           <>
             <div>
               <h3 className="text-base font-bold text-zinc-950">{title}</h3>
-              <p className="text-xs text-zinc-500 mt-1">
+              <p className="text-[14px] text-zinc-500 mt-1">
                 Agar kami dapat membantu dan menindaklanjuti percakapan Anda dengan lebih baik.
               </p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-3 pt-1">
               <div>
-                <label className="block text-[11px] font-semibold text-zinc-500 uppercase tracking-wider mb-1">
+                <label className="block text-[13px] font-semibold text-zinc-600 uppercase tracking-wider mb-1">
                   Nama Lengkap
                 </label>
                 <div className="relative">
@@ -83,13 +83,13 @@ export const LeadModal: React.FC<LeadModalProps> = ({
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Nama Anda"
-                    className="w-full pl-9 pr-4 py-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-sm text-zinc-900 outline-none focus:bg-white focus:border-zinc-900"
+                    className="w-full pl-9 pr-4 py-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-[15px] text-zinc-900 outline-none focus:bg-white focus:border-zinc-900"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-[11px] font-semibold text-zinc-500 uppercase tracking-wider mb-1">
+                <label className="block text-[13px] font-semibold text-zinc-600 uppercase tracking-wider mb-1">
                   Nomor WhatsApp
                 </label>
                 <div className="relative">
@@ -100,7 +100,7 @@ export const LeadModal: React.FC<LeadModalProps> = ({
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="0812xxxxxxxx"
-                    className="w-full pl-9 pr-4 py-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-sm text-zinc-900 outline-none focus:bg-white focus:border-zinc-900"
+                    className="w-full pl-9 pr-4 py-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-[15px] text-zinc-900 outline-none focus:bg-white focus:border-zinc-900"
                   />
                 </div>
               </div>
@@ -108,7 +108,7 @@ export const LeadModal: React.FC<LeadModalProps> = ({
               <button
                 type="submit"
                 disabled={loading || !name.trim() || !phone.trim()}
-                className="w-full py-3 text-white rounded-xl text-xs font-semibold transition-all disabled:opacity-40 shadow-sm"
+                className="w-full py-3 text-white rounded-xl text-[15px] font-semibold transition-all disabled:opacity-40 shadow-sm"
                 style={{ backgroundColor: themeColor }}
               >
                 {loading ? "Menyimpan..." : "Kirim Kontak"}

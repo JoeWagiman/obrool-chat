@@ -1,66 +1,76 @@
-import React from "react";
-import { MessageCircle, ShieldCheck } from "lucide-react";
+import { ShieldCheck, Settings, LogIn } from "lucide-react";
 import type { AgentProfile } from "../types";
 
 interface ChatHeaderProps {
   agent: AgentProfile;
-  handleShare?: () => void;
+  isOwner: boolean;
+  showOwnerPanel: boolean;
+  onToggleOwnerPanel: () => void;
+  onOpenOwnerLogin: () => void;
 }
 
-export const ChatHeader: React.FC<ChatHeaderProps> = ({ agent }) => {
+export const ChatHeader: React.FC<ChatHeaderProps> = ({
+  agent,
+  isOwner,
+  showOwnerPanel,
+  onToggleOwnerPanel,
+  onOpenOwnerLogin,
+}) => {
   const avatarUrl =
     agent.avatar ||
     "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&auto=format&fit=crop&q=80";
 
   return (
-    <header className="h-16 px-4 sm:px-6 bg-white/95 backdrop-blur-md border-b border-zinc-200/80 flex items-center justify-between flex-shrink-0 sticky top-0 z-20">
-      <div className="flex items-center gap-3 min-w-0">
+    <header className="h-14 px-3 sm:px-5 bg-white border-b border-zinc-200 flex items-center justify-between flex-shrink-0 sticky top-0 z-20">
+      {/* Left: Avatar & Store Name */}
+      <div className="flex items-center gap-2.5 min-w-0">
         <div className="relative flex-shrink-0">
           <img
             src={avatarUrl}
             alt={agent.name}
-            className="w-10 h-10 rounded-full object-cover border border-zinc-200 shadow-2xs"
+            className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl object-cover border border-zinc-200 shadow-2xs"
           />
-          <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-white rounded-full"></span>
         </div>
 
         <div className="min-w-0">
-          <div className="flex items-center gap-1.5">
-            <h1 className="text-sm sm:text-base font-bold text-zinc-950 truncate leading-tight">
+          <div className="flex items-center gap-1">
+            <h1 className="text-xs sm:text-sm font-bold text-zinc-950 truncate leading-tight">
               {agent.name}
             </h1>
-            <ShieldCheck className="w-3.5 h-3.5 text-blue-600 flex-shrink-0" />
+            <ShieldCheck className="w-3.5 h-3.5 text-zinc-800 flex-shrink-0" />
           </div>
-          <p className="text-[11px] font-medium text-emerald-600 flex items-center gap-1 mt-0.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span>Aktif 24/7 • Respons Instan</span>
+          <p className="text-[10px] font-medium text-zinc-500 truncate">
+            {agent.handle ? `@${agent.handle}` : "Asisten AI"}
           </p>
         </div>
       </div>
 
+      {/* Right: Owner / Login Button */}
       <div className="flex items-center gap-2">
-        {agent.adminWhatsApp && (
-          <a
-            href={`https://wa.me/${agent.adminWhatsApp.replace(/\D/g, "")}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 text-xs font-semibold transition-colors"
+        {isOwner ? (
+          <button
+            type="button"
+            onClick={onToggleOwnerPanel}
+            title={showOwnerPanel ? "Tutup Pengaturan" : "Pengaturan Profil"}
+            aria-label={showOwnerPanel ? "Tutup Pengaturan" : "Pengaturan Profil"}
+            className={`p-1.5 rounded-lg border transition-colors inline-flex items-center justify-center shadow-2xs ${
+              showOwnerPanel
+                ? "bg-zinc-950 text-white border-zinc-950"
+                : "border-zinc-200 hover:border-zinc-300 text-zinc-600 hover:text-zinc-950 bg-white hover:bg-zinc-100"
+            }`}
           >
-            <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Chat WhatsApp CS</span>
-          </a>
-        )}
-
-        {!agent.hideBranding && (
-          <a
-            href="https://obrool.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-semibold text-zinc-400 hover:text-zinc-700 transition-colors"
+            <Settings className="w-4 h-4" />
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={onOpenOwnerLogin}
+            title="Masuk ke akun Obrool"
+            className="px-3 py-1.5 border border-zinc-200 hover:border-zinc-300 text-zinc-700 hover:text-zinc-950 rounded-lg text-xs font-semibold transition-colors hover:bg-zinc-50 flex items-center gap-1.5 shadow-2xs"
           >
-            <span>Powered by</span>
-            <span className="font-bold text-zinc-900">Obrool</span>
-          </a>
+            <LogIn className="w-3.5 h-3.5" />
+            <span>Masuk</span>
+          </button>
         )}
       </div>
     </header>

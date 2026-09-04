@@ -1,0 +1,8 @@
+# robots.txt for chat.obrool.com
+User-agent: *
+Allow: /
+
+# Exclude internal API requests
+Disallow: /api/
+
+Sitemap: https://chat.obrool.com/sitemap.xml
