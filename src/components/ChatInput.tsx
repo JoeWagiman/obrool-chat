@@ -28,13 +28,22 @@ export const ChatInput: React.FC<ChatInputProps> = ({
     setText("");
   };
 
+  const effectiveSuggestions =
+    suggestions && suggestions.length > 0
+      ? suggestions
+      : [
+          "Cek ongkir Jakarta ke Surabaya 1 kg",
+          "Berapa ongkir Bandung ke Yogyakarta 2 kg?",
+          "Lacak paket JNE 582230008329223",
+        ];
+
   return (
     <div className="p-3 sm:p-4 bg-white/95 backdrop-blur-md border-t border-zinc-200/80 flex-shrink-0">
       <div className="max-w-4xl mx-auto space-y-2.5">
         {/* Quick Suggestion Pills */}
-        {suggestions && suggestions.length > 0 && (
+        {effectiveSuggestions.length > 0 && (
           <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
-            {suggestions.map((s, idx) => (
+            {effectiveSuggestions.map((s, idx) => (
               <button
                 key={idx}
                 type="button"
