@@ -79,7 +79,7 @@ export function LandingHandleClaim({ onSelectHandle }: LandingHandleClaimProps) 
             href={`${OBROOL_API_URL}/register?redirect=${encodeURIComponent(typeof window !== "undefined" ? window.location.href : "")}${inputHandle.length >= 3 ? `&claim=${encodeURIComponent(inputHandle)}` : ""}`}
             className="text-[15px] font-semibold px-4 py-2 bg-black text-white rounded-xl hover:bg-zinc-800 transition-colors shadow-2xs"
           >
-            Mulai Gratis
+            Daftar
           </a>
         </div>
 
@@ -108,7 +108,7 @@ export function LandingHandleClaim({ onSelectHandle }: LandingHandleClaimProps) 
               className="w-full py-2.5 px-4 text-center rounded-xl bg-black text-white font-semibold text-[15px] hover:bg-zinc-800 transition-colors shadow-2xs"
               onClick={() => setMobileNavOpen(false)}
             >
-              Mulai Gratis
+              Daftar
             </a>
           </div>
         )}
