@@ -41,6 +41,9 @@ export default function App() {
     fetchAgentProfile(identifier)
       .then((profile) => {
         setAgent(profile);
+        if (profile.name) {
+          document.title = `${profile.name} — Obrool Chat`;
+        }
         // Set welcome message
         if (profile.welcomeMessage) {
           setMessages([
