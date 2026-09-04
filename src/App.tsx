@@ -80,8 +80,9 @@ export default function App() {
     try {
       // Send message with short recent history for context
       const historyPayload = messages.slice(-4).map((m) => ({
-        role: m.role,
+        role: (m.role === "assistant" ? "agent" : "user") as "agent" | "user",
         content: m.content,
+        text: m.content,
       }));
 
       const reply = await sendChatMessage(agent.id, text, sessionIdRef.current, historyPayload);

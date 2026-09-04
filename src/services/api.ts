@@ -24,7 +24,7 @@ export async function sendChatMessage(
   agentId: string,
   message: string,
   sessionId: string,
-  history?: Array<{ role: "user" | "assistant"; content: string }>
+  history?: Array<{ role: "user" | "assistant" | "agent"; content: string; text?: string }>
 ): Promise<string> {
   const res = await fetch(`${OBROOL_API_URL}/api/adp/chat`, {
     method: "POST",
