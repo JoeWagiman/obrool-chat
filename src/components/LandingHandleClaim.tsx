@@ -13,9 +13,10 @@ import {
 
 interface LandingHandleClaimProps {
   onSelectHandle: (handle: string) => void;
+  isLoggedIn?: boolean;
 }
 
-export function LandingHandleClaim({ onSelectHandle }: LandingHandleClaimProps) {
+export function LandingHandleClaim({ onSelectHandle, isLoggedIn = false }: LandingHandleClaimProps) {
   const [inputHandle, setInputHandle] = useState("");
   const [checking, setChecking] = useState(false);
   const [checkResult, setCheckResult] = useState<HandleCheckResult | null>(null);
@@ -60,7 +61,6 @@ export function LandingHandleClaim({ onSelectHandle }: LandingHandleClaimProps) 
     };
   }, []);
 
-
   return (
     <div className="min-h-screen bg-[#fafafa] text-zinc-900 flex flex-col justify-between selection:bg-zinc-200">
       {/* Top Navigation */}
@@ -69,18 +69,29 @@ export function LandingHandleClaim({ onSelectHandle }: LandingHandleClaimProps) 
 
         {/* Desktop Links */}
         <div className="hidden sm:flex items-center gap-4">
-          <a
-            href={`${OBROOL_API_URL}/login?redirect=${encodeURIComponent(typeof window !== "undefined" ? window.location.href : "")}${inputHandle.length >= 3 ? `&claim=${encodeURIComponent(inputHandle)}` : ""}`}
-            className="text-[15px] font-semibold text-zinc-600 hover:text-black transition-colors"
-          >
-            Masuk Studio
-          </a>
-          <a
-            href={`${OBROOL_API_URL}/register?redirect=${encodeURIComponent(typeof window !== "undefined" ? window.location.href : "")}${inputHandle.length >= 3 ? `&claim=${encodeURIComponent(inputHandle)}` : ""}`}
-            className="text-[15px] font-semibold px-4 py-2 bg-black text-white rounded-xl hover:bg-zinc-800 transition-colors shadow-2xs"
-          >
-            Daftar
-          </a>
+          {isLoggedIn ? (
+            <a
+              href={`${OBROOL_API_URL}/dashboard`}
+              className="text-[15px] font-semibold px-4 py-2 bg-black text-white rounded-xl hover:bg-zinc-800 transition-colors shadow-2xs"
+            >
+              Buka Studio
+            </a>
+          ) : (
+            <>
+              <a
+                href={`${OBROOL_API_URL}/login?redirect=${encodeURIComponent(typeof window !== "undefined" ? window.location.href : "")}${inputHandle.length >= 3 ? `&claim=${encodeURIComponent(inputHandle)}` : ""}`}
+                className="text-[15px] font-semibold text-zinc-600 hover:text-black transition-colors"
+              >
+                Masuk Studio
+              </a>
+              <a
+                href={`${OBROOL_API_URL}/register?redirect=${encodeURIComponent(typeof window !== "undefined" ? window.location.href : "")}${inputHandle.length >= 3 ? `&claim=${encodeURIComponent(inputHandle)}` : ""}`}
+                className="text-[15px] font-semibold px-4 py-2 bg-black text-white rounded-xl hover:bg-zinc-800 transition-colors shadow-2xs"
+              >
+                Daftar
+              </a>
+            </>
+          )}
         </div>
 
         {/* Mobile Dropdown Strip 3 Button */}
@@ -96,20 +107,32 @@ export function LandingHandleClaim({ onSelectHandle }: LandingHandleClaimProps) 
         {/* Mobile Dropdown Menu */}
         {mobileNavOpen && (
           <div className="sm:hidden absolute top-full left-0 right-0 bg-white border-b border-zinc-200 p-4 shadow-lg flex flex-col gap-2.5 animate-in fade-in slide-in-from-top-2 z-50">
-            <a
-              href={`${OBROOL_API_URL}/login?redirect=${encodeURIComponent(typeof window !== "undefined" ? window.location.href : "")}${inputHandle.length >= 3 ? `&claim=${encodeURIComponent(inputHandle)}` : ""}`}
-              className="w-full py-2.5 px-4 text-center rounded-xl border border-zinc-200 font-semibold text-[15px] text-zinc-700 hover:text-black hover:bg-zinc-50 transition-colors"
-              onClick={() => setMobileNavOpen(false)}
-            >
-              Masuk Studio
-            </a>
-            <a
-              href={`${OBROOL_API_URL}/register?redirect=${encodeURIComponent(typeof window !== "undefined" ? window.location.href : "")}${inputHandle.length >= 3 ? `&claim=${encodeURIComponent(inputHandle)}` : ""}`}
-              className="w-full py-2.5 px-4 text-center rounded-xl bg-black text-white font-semibold text-[15px] hover:bg-zinc-800 transition-colors shadow-2xs"
-              onClick={() => setMobileNavOpen(false)}
-            >
-              Daftar
-            </a>
+            {isLoggedIn ? (
+              <a
+                href={`${OBROOL_API_URL}/dashboard`}
+                className="w-full py-2.5 px-4 text-center rounded-xl bg-black text-white font-semibold text-[15px] hover:bg-zinc-800 transition-colors shadow-2xs"
+                onClick={() => setMobileNavOpen(false)}
+              >
+                Buka Studio
+              </a>
+            ) : (
+              <>
+                <a
+                  href={`${OBROOL_API_URL}/login?redirect=${encodeURIComponent(typeof window !== "undefined" ? window.location.href : "")}${inputHandle.length >= 3 ? `&claim=${encodeURIComponent(inputHandle)}` : ""}`}
+                  className="w-full py-2.5 px-4 text-center rounded-xl border border-zinc-200 font-semibold text-[15px] text-zinc-700 hover:text-black hover:bg-zinc-50 transition-colors"
+                  onClick={() => setMobileNavOpen(false)}
+                >
+                  Masuk Studio
+                </a>
+                <a
+                  href={`${OBROOL_API_URL}/register?redirect=${encodeURIComponent(typeof window !== "undefined" ? window.location.href : "")}${inputHandle.length >= 3 ? `&claim=${encodeURIComponent(inputHandle)}` : ""}`}
+                  className="w-full py-2.5 px-4 text-center rounded-xl bg-black text-white font-semibold text-[15px] hover:bg-zinc-800 transition-colors shadow-2xs"
+                  onClick={() => setMobileNavOpen(false)}
+                >
+                  Daftar
+                </a>
+              </>
+            )}
           </div>
         )}
       </header>
@@ -296,12 +319,12 @@ export function LandingHandleClaim({ onSelectHandle }: LandingHandleClaimProps) 
             Website Utama
           </a>
           <a
-            href="https://obrool.com/docs"
+            href="https://obrool.com/terms"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-zinc-700 transition-colors"
           >
-            Dokumentasi
+            Syarat Ketentuan
           </a>
           <a
             href="https://obrool.com/privacy"

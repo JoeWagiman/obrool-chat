@@ -15,6 +15,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
   themeColor = "#0a0a0b",
 }) => {
   const [text, setText] = useState("");
+  const [dismissed, setDismissed] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -24,8 +25,14 @@ export const ChatInput: React.FC<ChatInputProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!text.trim() || loading) return;
+    setDismissed(true);
     onSendMessage(text.trim());
     setText("");
+  };
+
+  const handleSuggestionClick = (s: string) => {
+    setDismissed(true);
+    onSendMessage(s);
   };
 
   const effectiveSuggestions =
@@ -40,16 +47,16 @@ export const ChatInput: React.FC<ChatInputProps> = ({
   return (
     <div className="p-3 sm:p-4 bg-white/95 backdrop-blur-md border-t border-zinc-200/80 flex-shrink-0">
       <div className="w-full max-w-5xl mx-auto space-y-2.5">
-        {/* Quick Suggestion Pills - Wrap naturally without horizontal scroll / pagination */}
-        {effectiveSuggestions.length > 0 && (
-          <div className="flex flex-wrap items-center gap-2 pb-1">
+        {/* Quick Suggestion Pills - Single row without wrapping, auto-hides once tapped */}
+        {!dismissed && effectiveSuggestions.length > 0 && (
+          <div className="flex items-center gap-2 pb-1 overflow-x-auto no-scrollbar flex-nowrap">
             {effectiveSuggestions.map((s, idx) => (
               <button
                 key={idx}
                 type="button"
-                onClick={() => onSendMessage(s)}
+                onClick={() => handleSuggestionClick(s)}
                 disabled={loading}
-                className="text-[13px] sm:text-[14px] px-3.5 py-1.5 rounded-full bg-zinc-100 hover:bg-zinc-200/80 text-zinc-700 font-medium transition-colors border border-zinc-200/60 disabled:opacity-50 text-left"
+                className="text-[13px] sm:text-[14px] px-3.5 py-1.5 rounded-full bg-zinc-100 hover:bg-zinc-200/80 text-zinc-700 font-medium transition-colors border border-zinc-200/60 disabled:opacity-50 text-left whitespace-nowrap flex-shrink-0"
               >
                 {s}
               </button>
@@ -78,6 +85,29 @@ export const ChatInput: React.FC<ChatInputProps> = ({
             {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-4 h-4" />}
           </button>
         </form>
+
+        {/* Legal Disclaimer & Links */}
+        <div className="mt-2 text-center text-[11px] text-zinc-400 select-none">
+          Dengan mengobrol, Anda menyetujui{" "}
+          <a
+            href="https://obrool.com/terms"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-2 hover:text-zinc-600 transition-colors"
+          >
+            Syarat Ketentuan
+          </a>{" "}
+          &{" "}
+          <a
+            href="https://obrool.com/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-2 hover:text-zinc-600 transition-colors"
+          >
+            Kebijakan Privasi
+          </a>
+          .
+        </div>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import { ShieldCheck, Settings, LogIn } from "lucide-react";
-import type { AgentProfile } from "../types";
+import { type AgentProfile, DEFAULT_AVATAR } from "../types";
 
 interface ChatHeaderProps {
   agent: AgentProfile;
@@ -16,9 +16,7 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
   onToggleOwnerPanel,
   onOpenOwnerLogin,
 }) => {
-  const avatarUrl =
-    agent.avatar ||
-    "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&auto=format&fit=crop&q=80";
+  const avatarUrl = agent.avatar || DEFAULT_AVATAR;
 
   return (
     <header className="h-14 px-3 sm:px-5 bg-white border-b border-zinc-200 flex items-center justify-between flex-shrink-0 sticky top-0 z-20">

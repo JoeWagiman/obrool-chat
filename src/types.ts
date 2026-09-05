@@ -28,6 +28,7 @@ export interface AgentProfile {
   seoDescription?: string | null;
   seoKeywords?: string | null;
   ogImage?: string | null;
+  pageBackground?: string | null;
 }
 
 export interface ChatMessage {
@@ -36,3 +37,6 @@ export interface ChatMessage {
   content: string;
   createdAt: number;
 }
+
+export const DEFAULT_AVATAR = "/mark.svg";
+

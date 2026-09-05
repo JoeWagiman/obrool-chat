@@ -183,6 +183,7 @@ export async function updateAgentProfile(
     seoDescription?: string;
     seoKeywords?: string;
     ogImage?: string;
+    pageBackground?: string;
   }
 ): Promise<AgentProfile> {
   const res = await fetch(`${OBROOL_API_URL}/api/agents/${agentId}`, {

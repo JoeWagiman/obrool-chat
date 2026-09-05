@@ -1,5 +1,5 @@
-import React from "react";
-import type { BioLink } from "../types";
+import React, { useState } from "react";
+import { type BioLink, DEFAULT_AVATAR } from "../types";
 import {
   Globe,
   ShoppingBag,
@@ -9,6 +9,8 @@ import {
   ArrowUpRight,
   ShieldCheck,
   Settings,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 
 interface BioLinksSectionProps {
@@ -49,9 +51,13 @@ export const BioLinksSection: React.FC<BioLinksSectionProps> = ({
   onToggleOwnerPanel,
   onOpenOwnerLogin,
 }) => {
-  const avatarUrl =
-    avatar ||
-    "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&auto=format&fit=crop&q=80";
+  const avatarUrl = avatar || DEFAULT_AVATAR;
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  // Jika jumlah link lebih dari 3, sembunyikan sisanya di tampilan awal agar chat tidak terdorong jauh
+  const COLLAPSED_LIMIT = 3;
+  const hasMoreLinks = links.length > COLLAPSED_LIMIT;
+  const visibleLinks = isExpanded ? links : links.slice(0, COLLAPSED_LIMIT);
 
   return (
     <div className="w-full max-w-2xl sm:max-w-3xl mx-auto pt-2 pb-3 px-4 space-y-5 text-center relative">
@@ -105,8 +111,8 @@ export const BioLinksSection: React.FC<BioLinksSectionProps> = ({
 
       {/* Bio Links */}
       <div className="space-y-2.5">
-        {links.length > 0 &&
-          links.map((link) => (
+        {visibleLinks.length > 0 &&
+          visibleLinks.map((link) => (
             <a
               key={link.id}
               href={link.url}
@@ -123,6 +129,27 @@ export const BioLinksSection: React.FC<BioLinksSectionProps> = ({
               <ArrowUpRight className="w-4 h-4 text-zinc-400 group-hover:text-zinc-700 transition-colors flex-shrink-0" />
             </a>
           ))}
+
+        {/* Tombol Lipat / Buka Jika Jumlah Link Lebih Dari 3 */}
+        {hasMoreLinks && (
+          <button
+            type="button"
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="w-full py-2 px-3 rounded-xl border border-zinc-200/80 bg-zinc-50/80 hover:bg-zinc-100 text-zinc-600 hover:text-zinc-900 text-[13px] font-semibold transition-colors flex items-center justify-center gap-1.5 shadow-2xs"
+          >
+            {isExpanded ? (
+              <>
+                <span>Sembunyikan tautan</span>
+                <ChevronUp className="w-3.5 h-3.5" />
+              </>
+            ) : (
+              <>
+                <span>Lihat {links.length - COLLAPSED_LIMIT} tautan lainnya</span>
+                <ChevronDown className="w-3.5 h-3.5" />
+              </>
+            )}
+          </button>
+        )}
 
         {/* WhatsApp Admin Direct Link */}
         {adminWhatsApp && (

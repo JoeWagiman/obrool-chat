@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { fetchAgentProfile, sendChatMessage } from "./services/api";
-import type { AgentProfile, ChatMessage } from "./types";
+import { type AgentProfile, type ChatMessage, DEFAULT_AVATAR } from "./types";
 import { MessageItem } from "./components/MessageItem";
 import { ChatInput } from "./components/ChatInput";
 import { LeadModal } from "./components/LeadModal";
@@ -54,6 +54,10 @@ export default function App() {
 
   const sessionIdRef = useRef<string>("sess_" + Date.now());
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesRef = useRef<ChatMessage[]>([]);
+  useEffect(() => {
+    messagesRef.current = messages;
+  }, [messages]);
 
   // Check SSO token from URL hash (e.g. #sso_token=...&sso_user_id=...)
   useEffect(() => {
@@ -168,11 +172,13 @@ export default function App() {
       createdAt: Date.now(),
     };
 
-    setMessages((prev) => [...prev, userMsg]);
+    const nextHistory = [...messagesRef.current, userMsg];
+    setMessages(nextHistory);
+    messagesRef.current = nextHistory;
     setChatLoading(true);
 
     try {
-      const historyPayload = messages.slice(-4).map((m) => ({
+      const historyPayload = messagesRef.current.slice(0, -1).slice(-8).map((m) => ({
         role: (m.role === "assistant" ? "agent" : "user") as "agent" | "user",
         content: m.content,
         text: m.content,
@@ -214,7 +220,12 @@ export default function App() {
 
   // 1. Root Landing Page (Klaim & Cari Handle ala lynk.id)
   if (!activeIdentifier) {
-    return <LandingHandleClaim onSelectHandle={handleSelectHandle} />;
+    return (
+      <LandingHandleClaim
+        onSelectHandle={handleSelectHandle}
+        isLoggedIn={Boolean(ownerToken)}
+      />
+    );
   }
 
   // 2. Loading Profile Screen
@@ -258,12 +269,27 @@ export default function App() {
     );
   }
 
-  const avatarUrl =
-    agent.avatar ||
-    "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&auto=format&fit=crop&q=80";
+  const avatarUrl = agent.avatar || DEFAULT_AVATAR;
+
+  // Background styling: supports custom color (e.g. #f4f4f5), gradient, or image URL
+  const bgValue = agent.pageBackground?.trim();
+  const isBgImage = Boolean(bgValue && (bgValue.startsWith("http://") || bgValue.startsWith("https://") || bgValue.startsWith("data:image/")));
+  const customBgStyle: React.CSSProperties = isBgImage
+    ? {
+        backgroundImage: `url("${bgValue}")`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }
+    : bgValue
+    ? { backgroundColor: bgValue }
+    : {};
 
   return (
-    <div className="h-dvh flex flex-col bg-[#fbfbfa] text-zinc-900 overflow-hidden">
+    <div
+      className="h-dvh flex flex-col bg-[#fbfbfa] text-zinc-900 overflow-hidden transition-colors"
+      style={customBgStyle}
+    >
       {/* Main Container: Full screen width, split columns on large screen, clean without top navbar */}
       <div className="flex-1 flex flex-col lg:flex-row overflow-hidden w-full p-2 sm:p-4 lg:p-5 gap-4">
         {/* Left Column: Bio Links & Brand Info (Desktop) */}
