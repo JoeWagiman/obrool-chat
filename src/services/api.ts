@@ -184,6 +184,8 @@ export async function updateAgentProfile(
     seoKeywords?: string;
     ogImage?: string;
     pageBackground?: string;
+    avatarStyle?: "round" | "square";
+    entityType?: import("../types").EntityType;
   }
 ): Promise<AgentProfile> {
   const res = await fetch(`${OBROOL_API_URL}/api/agents/${agentId}`, {
@@ -252,4 +254,35 @@ export async function generateAgentSeo(
     seoDescription: data.seoDescription || "",
     seoKeywords: data.seoKeywords || "",
   };
+}
+
+export async function decorateAgentPageWithAI(
+  agentId: string,
+  token: string
+): Promise<{
+  message: string;
+  decoration: {
+    widgetColor: string;
+    pageBackground: string;
+    avatarStyle: "round" | "square";
+    themeName?: string;
+    reasoning?: string;
+    lastDecoratedAt: string;
+  };
+  agent: AgentProfile;
+}> {
+  const res = await fetch(`${OBROOL_API_URL}/api/agents/${agentId}/decorate`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.error || "Gagal mendekorasi halaman dengan AI.");
+  }
+
+  return data;
 }

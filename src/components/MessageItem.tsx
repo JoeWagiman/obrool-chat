@@ -6,6 +6,7 @@ interface MessageItemProps {
   message: ChatMessage;
   agentAvatar: string;
   agentName: string;
+  avatarStyle?: "round" | "square" | null;
   themeColor?: string;
 }
 
@@ -13,6 +14,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
   message,
   agentAvatar,
   agentName,
+  avatarStyle = "square",
   themeColor = "#0a0a0b",
 }) => {
   const isUser = message.role === "user";
@@ -23,7 +25,9 @@ export const MessageItem: React.FC<MessageItemProps> = ({
         <img
           src={agentAvatar}
           alt={agentName}
-          className="w-8 h-8 rounded-full object-cover border border-zinc-200 flex-shrink-0 mt-1 shadow-2xs"
+          className={`w-8 h-8 object-cover flex-shrink-0 mt-1 shadow-2xs transition-all ${
+            avatarStyle === "round" ? "rounded-full" : "rounded-none"
+          }`}
         />
       )}
 
@@ -39,7 +43,16 @@ export const MessageItem: React.FC<MessageItemProps> = ({
           {isUser ? (
             message.content
           ) : (
-            <div dangerouslySetInnerHTML={{ __html: renderMarkdown(message.content) }} />
+            (() => {
+              const html = renderMarkdown(message.content);
+              const cursor = '<span class="inline-block w-1.5 h-3.5 ml-1 bg-zinc-400 animate-pulse align-middle rounded-xs" aria-hidden="true"></span>';
+              const displayHtml = message.isTyping
+                ? html.endsWith("</p>")
+                  ? html.slice(0, -4) + cursor + "</p>"
+                  : html + cursor
+                : html;
+              return <div dangerouslySetInnerHTML={{ __html: displayHtml }} />;
+            })()
           )}
         </div>
 

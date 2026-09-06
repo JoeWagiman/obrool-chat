@@ -52,7 +52,7 @@ function parseInlineMarkdown(text: string): string {
   res = res.replace(/`([^`]+?)`/g, '<code class="bg-[#f4f4f5] px-1.5 py-0.5 rounded text-[0.75rem] font-mono text-[#09090b] border border-[#e4e4e7]">$1</code>');
   // Links (Absolute)
   res = res.replace(
-    /\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g,
+    /\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g,
     (_m, text: string, url: string) => buildLink(text, url, false)
   );
   // Links (Relative/Root-relative/Anchors with target="_top")
@@ -191,7 +191,7 @@ export function renderMarkdown(text: string): string {
   src = src.replace(/^# (.*$)/gim, '<h2 class="font-bold text-[1rem] text-[#09090b] mt-4 mb-2">$1</h2>');
 
   // 7. Blockquotes
-  src = src.replace(/^\> (.*$)/gim, '<blockquote class="border-l-2 border-[#09090b] pl-3 my-2 text-[#52525b] italic">$1</blockquote>');
+  src = src.replace(/^> (.*$)/gim, '<blockquote class="border-l-2 border-[#09090b] pl-3 my-2 text-[#52525b] italic">$1</blockquote>');
 
   // 8. Bold, Strike, Italic
   src = src.replace(/\*\*(.+?)\*\*/g, '<strong class="font-semibold text-[#09090b]">$1</strong>');
@@ -203,7 +203,7 @@ export function renderMarkdown(text: string): string {
 
   // 10. Links: [text](url) (Absolute)
   src = src.replace(
-    /\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g,
+    /\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g,
     (_m, text: string, url: string) => buildLink(text, url, false)
   );
 

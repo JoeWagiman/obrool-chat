@@ -5,6 +5,15 @@ export interface BioLink {
   icon?: string;
 }
 
+export type EntityType =
+  | "personal"
+  | "creator"
+  | "professional"
+  | "business"
+  | "shop"
+  | "institution"
+  | "community";
+
 export interface AgentProfile {
   id: string;
   userId?: string;
@@ -29,6 +38,9 @@ export interface AgentProfile {
   seoKeywords?: string | null;
   ogImage?: string | null;
   pageBackground?: string | null;
+  avatarStyle?: "round" | "square" | null;
+  lastDecoratedAt?: string | null;
+  entityType?: EntityType | null;
 }
 
 export interface ChatMessage {
@@ -36,6 +48,7 @@ export interface ChatMessage {
   role: "user" | "assistant";
   content: string;
   createdAt: number;
+  isTyping?: boolean;
 }
 
 export const DEFAULT_AVATAR = "/mark.svg";
