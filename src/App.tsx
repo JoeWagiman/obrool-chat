@@ -290,10 +290,10 @@ export default function App() {
       className="h-dvh flex flex-col bg-[#fbfbfa] text-zinc-900 overflow-hidden transition-colors"
       style={customBgStyle}
     >
-      {/* Main Container: Full screen width, split columns on large screen, clean without top navbar */}
-      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden w-full p-2 sm:p-4 lg:p-5 gap-4">
+      {/* Main Container: Edge-to-edge, split columns on large screen without card outline wrapping */}
+      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden w-full">
         {/* Left Column: Bio Links & Brand Info (Desktop) */}
-        <aside className="hidden lg:flex lg:w-[380px] xl:w-[440px] 2xl:w-[480px] flex-shrink-0 bg-white border border-zinc-200 rounded-2xl shadow-sm overflow-y-auto flex-col p-4 xl:p-6">
+        <aside className="hidden lg:flex lg:w-[380px] xl:w-[440px] 2xl:w-[480px] flex-shrink-0 bg-white border-r border-zinc-200/80 overflow-y-auto flex-col p-4 xl:p-6">
           <BioLinksSection
             name={agent.name}
             avatar={agent.avatar}
@@ -308,7 +308,7 @@ export default function App() {
         </aside>
 
         {/* Center/Main Chat Column */}
-        <div className="flex-1 flex flex-col bg-white border border-zinc-200 rounded-2xl shadow-sm overflow-hidden h-full min-w-0">
+        <div className="flex-1 flex flex-col bg-white overflow-hidden h-full min-w-0">
           {/* Scrollable Area containing Bio Links on mobile + Chat History */}
           <main className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
             {/* On mobile: BioLinksSection displayed at top */}

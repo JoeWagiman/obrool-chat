@@ -56,7 +56,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
                 type="button"
                 onClick={() => handleSuggestionClick(s)}
                 disabled={loading}
-                className="text-[13px] sm:text-[14px] px-3.5 py-1.5 rounded-full bg-zinc-100 hover:bg-zinc-200/80 text-zinc-700 font-medium transition-colors border border-zinc-200/60 disabled:opacity-50 text-left whitespace-nowrap flex-shrink-0"
+                className="text-[13px] sm:text-[14px] px-3.5 py-1.5 rounded-full bg-zinc-100/90 hover:bg-zinc-200 text-zinc-700 font-medium transition-colors disabled:opacity-50 text-left whitespace-nowrap flex-shrink-0"
               >
                 {s}
               </button>
