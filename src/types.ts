@@ -17,6 +17,7 @@ export type EntityType =
 export interface AgentProfile {
   id: string;
   userId?: string;
+  referralCode?: string | null;
   name: string;
   status: string;
   handle?: string;

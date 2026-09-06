@@ -7,7 +7,11 @@ export const OBROOL_API_URL =
     : "https://obrool.com");
 
 export async function fetchAgentProfile(identifier: string): Promise<AgentProfile> {
-  const clean = identifier.trim().replace(/^@/, "");
+  let clean = identifier.trim();
+  try {
+    clean = decodeURIComponent(clean);
+  } catch {}
+  clean = clean.replace(/^@+/, "");
   const res = await fetch(`${OBROOL_API_URL}/api/agents/${encodeURIComponent(clean)}/public`, {
     headers: { "Content-Type": "application/json" },
   });

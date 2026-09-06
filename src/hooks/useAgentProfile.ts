@@ -9,9 +9,10 @@ export function getIdentifierFromUrl(): string | null {
   const queryAgent = params.get("agent") || params.get("id") || params.get("h");
 
   let pathHandle = window.location.pathname.replace(/^\/+/, "");
-  if (pathHandle.startsWith("@")) {
-    pathHandle = pathHandle.slice(1);
-  }
+  try {
+    pathHandle = decodeURIComponent(pathHandle);
+  } catch {}
+  pathHandle = pathHandle.replace(/^@+/, "");
 
   return queryAgent || pathHandle || null;
 }
@@ -21,6 +22,19 @@ export function useAgentProfile() {
   const [agent, setAgent] = useState<AgentProfile | null>(null);
   const [loadingProfile, setLoadingProfile] = useState(false);
   const [profileError, setProfileError] = useState<string | null>(null);
+
+  // Normalize URL on mount: if browser contains @ or %40, cleanly rewrite to /handle
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const rawPath = window.location.pathname;
+      if (rawPath.includes("@") || rawPath.toLowerCase().includes("%40")) {
+        const clean = getIdentifierFromUrl();
+        if (clean) {
+          window.history.replaceState({}, "", `/${clean}${window.location.search}`);
+        }
+      }
+    }
+  }, []);
 
   // Sync with browser back/forward buttons
   useEffect(() => {
@@ -62,8 +76,13 @@ export function useAgentProfile() {
   }, [activeIdentifier]);
 
   const handleSelectHandle = useCallback((handle: string) => {
-    const clean = handle.trim().replace(/^@+/, "");
-    window.history.pushState({}, "", `/@${clean}`);
+    let clean = handle.trim();
+    try {
+      clean = decodeURIComponent(clean);
+    } catch {}
+    clean = clean.replace(/^@+/, "");
+    // Navigate with clean URL (e.g. /toko) to prevent browser from showing %40
+    window.history.pushState({}, "", `/${clean}`);
     setActiveIdentifier(clean);
   }, []);
 

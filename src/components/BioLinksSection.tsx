@@ -23,6 +23,8 @@ interface BioLinksSectionProps {
   showOwnerPanel?: boolean;
   onToggleOwnerPanel?: () => void;
   onOpenOwnerLogin?: () => void;
+  referralCode?: string | null;
+  hideBranding?: boolean;
 }
 
 import { detectPlatformFromUrl } from "../utils/platformDetector";
@@ -136,6 +138,8 @@ export const BioLinksSection: React.FC<BioLinksSectionProps> = ({
   showOwnerPanel,
   onToggleOwnerPanel,
   onOpenOwnerLogin,
+  referralCode,
+  hideBranding = false,
 }) => {
   const avatarUrl = avatar || DEFAULT_AVATAR;
   const [isExpanded, setIsExpanded] = useState(false);
@@ -262,14 +266,29 @@ export const BioLinksSection: React.FC<BioLinksSectionProps> = ({
 
       {/* Footer Branding & Owner Access */}
       <footer className="pt-4 pb-1 text-center flex items-center justify-center gap-2 text-[12px] text-zinc-400">
-        <a
-          href="https://chat.obrool.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:text-zinc-600 transition-colors font-medium"
-        >
-          chat.obrool.com
-        </a>
+        {!hideBranding ? (
+          <a
+            href={
+              referralCode
+                ? `https://obrool.com/?ref=${encodeURIComponent(referralCode)}`
+                : "https://chat.obrool.com"
+            }
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-zinc-600 transition-colors font-medium"
+          >
+            Ditenagai oleh Obrool
+          </a>
+        ) : (
+          <a
+            href="https://chat.obrool.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-zinc-600 transition-colors font-medium"
+          >
+            chat.obrool.com
+          </a>
+        )}
         {!isOwner && onOpenOwnerLogin && (
           <>
             <span>•</span>

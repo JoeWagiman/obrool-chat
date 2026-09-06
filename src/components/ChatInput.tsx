@@ -7,6 +7,8 @@ interface ChatInputProps {
   suggestions?: string[] | null;
   themeColor?: string;
   hasCustomBg?: boolean;
+  referralCode?: string | null;
+  hideBranding?: boolean;
 }
 
 export const ChatInput: React.FC<ChatInputProps> = ({
@@ -15,6 +17,8 @@ export const ChatInput: React.FC<ChatInputProps> = ({
   suggestions,
   themeColor = "#0a0a0b",
   hasCustomBg = false,
+  referralCode,
+  hideBranding = false,
 }) => {
   const [text, setText] = useState("");
   const [dismissed, setDismissed] = useState(false);
@@ -102,8 +106,40 @@ export const ChatInput: React.FC<ChatInputProps> = ({
           </button>
         </form>
 
+        {/* Branding & Referral Link (Soft Affiliate) - Only if hideBranding is false */}
+        {!hideBranding && (
+          <div className="flex items-center justify-center gap-1.5 text-[11px] text-zinc-400 select-none pt-0.5">
+            <span>Ditenagai oleh</span>
+            <a
+              href={
+                referralCode
+                  ? `https://obrool.com/?ref=${encodeURIComponent(referralCode)}`
+                  : "https://obrool.com"
+              }
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-zinc-600 hover:text-zinc-950 transition-colors"
+            >
+              Obrool
+            </a>
+            <span>•</span>
+            <a
+              href={
+                referralCode
+                  ? `https://obrool.com/?ref=${encodeURIComponent(referralCode)}`
+                  : "https://obrool.com"
+              }
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-2 hover:text-zinc-700 transition-colors"
+            >
+              Buat Asisten AI Anda
+            </a>
+          </div>
+        )}
+
         {/* Legal Disclaimer & Links */}
-        <p className="mt-1.5 text-center text-[11px] leading-relaxed text-zinc-400 select-none px-2">
+        <p className="mt-1 text-center text-[10px] leading-relaxed text-zinc-400 select-none px-2">
           <span>Dengan mengobrol, Anda menyetujui </span>
           <a
             href="https://obrool.com/terms"

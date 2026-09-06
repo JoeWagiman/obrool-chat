@@ -111,6 +111,8 @@ export default function App() {
             showOwnerPanel={showOwnerPanel}
             onToggleOwnerPanel={() => setShowOwnerPanel(!showOwnerPanel)}
             onOpenOwnerLogin={() => setShowOwnerLogin(true)}
+            referralCode={agent.referralCode}
+            hideBranding={agent.hideBranding}
           />
         </aside>
 
@@ -135,6 +137,8 @@ export default function App() {
                 showOwnerPanel={showOwnerPanel}
                 onToggleOwnerPanel={() => setShowOwnerPanel(!showOwnerPanel)}
                 onOpenOwnerLogin={() => setShowOwnerLogin(true)}
+                referralCode={agent.referralCode}
+                hideBranding={agent.hideBranding}
               />
             </div>
 
@@ -166,6 +170,8 @@ export default function App() {
             suggestions={agent.suggestedQuestions}
             themeColor={agent.widgetColor}
             hasCustomBg={Boolean(bgValue)}
+            referralCode={agent.referralCode}
+            hideBranding={agent.hideBranding}
           />
         </div>
 
