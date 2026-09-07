@@ -34,6 +34,7 @@ export interface AgentProfile {
   leadRequirePhone?: boolean;
   leadRequireEmail?: boolean;
   leadTriggerCount?: number;
+  leadIntentKeywords?: string[];
   seoTitle?: string | null;
   seoDescription?: string | null;
   seoKeywords?: string | null;

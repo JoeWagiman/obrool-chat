@@ -39,6 +39,8 @@ export default function App() {
     isTypingReply,
     showLeadModal,
     setShowLeadModal,
+    sessionId,
+    visitorId,
     messagesEndRef,
     handleSendMessage,
   } = useChatConversation(agent);
@@ -207,6 +209,8 @@ export default function App() {
         {agent.enableLeadCapture && (
           <LeadModal
             agentId={agent.id}
+            sessionId={sessionId}
+            visitorId={visitorId}
             isOpen={showLeadModal}
             onClose={() => setShowLeadModal(false)}
             title={agent.leadTitle}

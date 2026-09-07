@@ -32,6 +32,7 @@ export async function sendChatMessage(
   agentId: string,
   message: string,
   sessionId: string,
+  visitorId: string,
   history?: Array<{ role: "user" | "assistant" | "agent"; content: string; text?: string }>
 ): Promise<string> {
   const res = await fetch(`${OBROOL_API_URL}/api/adp/chat`, {
@@ -41,6 +42,7 @@ export async function sendChatMessage(
       agentId,
       message,
       sessionId,
+      visitorId,
       guestDeviceId: sessionId,
       recentHistory: history,
     }),
@@ -57,6 +59,8 @@ export async function sendChatMessage(
 
 export async function submitLeadCapture(payload: {
   agentId: string;
+  sessionId: string;
+  visitorId: string;
   name: string;
   phone?: string;
   email?: string;

@@ -4,6 +4,8 @@ import { submitLeadCapture } from "../services/api";
 
 interface LeadModalProps {
   agentId: string;
+  sessionId: string;
+  visitorId: string;
   isOpen: boolean;
   onClose: () => void;
   title?: string;
@@ -12,6 +14,8 @@ interface LeadModalProps {
 
 export const LeadModal: React.FC<LeadModalProps> = ({
   agentId,
+  sessionId,
+  visitorId,
   isOpen,
   onClose,
   title = "Tinggalkan Kontak Anda",
@@ -31,6 +35,8 @@ export const LeadModal: React.FC<LeadModalProps> = ({
     setLoading(true);
     const ok = await submitLeadCapture({
       agentId,
+      sessionId,
+      visitorId,
       name: name.trim(),
       phone: phone.trim(),
     });
