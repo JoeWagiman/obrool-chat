@@ -14,9 +14,10 @@ import {
 interface LandingHandleClaimProps {
   onSelectHandle: (handle: string) => void;
   isLoggedIn?: boolean;
+  isAdmin?: boolean;
 }
 
-export function LandingHandleClaim({ onSelectHandle, isLoggedIn = false }: LandingHandleClaimProps) {
+export function LandingHandleClaim({ onSelectHandle, isLoggedIn = false, isAdmin = false }: LandingHandleClaimProps) {
   const [inputHandle, setInputHandle] = useState("");
   const [checking, setChecking] = useState(false);
   const [checkResult, setCheckResult] = useState<HandleCheckResult | null>(null);
@@ -42,7 +43,7 @@ export function LandingHandleClaim({ onSelectHandle, isLoggedIn = false }: Landi
       setChecking(true);
       debounceTimer.current = setTimeout(async () => {
         try {
-          const res = await checkHandleAvailability(sanitized);
+          const res = await checkHandleAvailability(sanitized, isAdmin);
           setCheckResult(res);
         } catch {
           setCheckResult({ valid: false, error: "Gagal memeriksa handle." });

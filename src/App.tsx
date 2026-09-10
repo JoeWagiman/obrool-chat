@@ -51,6 +51,7 @@ export default function App() {
       <LandingHandleClaim
         onSelectHandle={handleSelectHandle}
         isLoggedIn={Boolean(ownerToken)}
+        isAdmin={isAdmin}
       />
     );
   }

@@ -98,7 +98,7 @@ const RESERVED_HANDLES = new Set([
   "terms", "privacy", "contact", "about", "bot", "ai", "status"
 ]);
 
-export async function checkHandleAvailability(handle: string): Promise<HandleCheckResult> {
+export async function checkHandleAvailability(handle: string, isAdmin = false): Promise<HandleCheckResult> {
   const clean = handle.trim().toLowerCase().replace(/^@+/, "").replace(/[^a-z0-9_-]/g, "");
 
   if (!clean || clean.length < 3 || clean.length > 32) {
@@ -109,7 +109,8 @@ export async function checkHandleAvailability(handle: string): Promise<HandleChe
     };
   }
 
-  if (RESERVED_HANDLES.has(clean)) {
+  // Handle reserved diblokir untuk umum, tapi boleh diklaim oleh admin.
+  if (RESERVED_HANDLES.has(clean) && !isAdmin) {
     return {
       valid: true,
       available: false,
